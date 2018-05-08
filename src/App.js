@@ -2,10 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import {
-  getForecast,
-  midnightWeatherForecastSelector,
-} from './modules/forecast';
+import { getForecast } from './modules/forecast';
 
 import { getMidnightWeather } from './utils';
 
@@ -14,8 +11,7 @@ import WeekForecast from './components/WeekForecast';
 
 const mapStateToProps = state => ({
   todayForecast: state.forecast.todayForecast,
-  // weekForecast: getMidnightWeather(state.forecast.weekForecast),
-  weekForecast: midnightWeatherForecastSelector(state),
+  weekForecast: getMidnightWeather(state.forecast.weekForecast),
 });
 
 const mapDispatchToProps = {
