@@ -1,5 +1,5 @@
 import * as api from '../utils/api';
-import { getMidnightWeather } from '../utils';
+import { getMidnightWeather, createReducer } from '../utils';
 
 const FORECAST_LOADING = 'FORECAST_LOADING';
 const FORECAST_ERROR = 'FORECAST_ERROR';
@@ -27,34 +27,22 @@ const forecastSuccess = payload => ({
   payload,
 });
 
-export const forecast = (state = initState, action) => {
-  switch (action.type) {
-    case FORECAST_LOADING:
-      return {
-        ...state,
-        isLoading: true,
-      };
+export const forecast = createReducer(initState, {
+  [FORECAST_LOADING]: () => ({
+    isLoading: true,
+  }),
 
-    case FORECAST_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-        hasError: true,
-        error: action.payload,
-      };
+  [FORECAST_ERROR]: (state, error) => ({
+    isLoading: false,
+    hasError: true,
+    error,
+  }),
 
-    case FORECAST_SUCCESS: {
-      return {
-        ...state,
-        ...action.payload,
-        isLoading: false,
-      };
-    }
-
-    default:
-      return state;
-  }
-};
+  [FORECAST_SUCCESS]: (state, payload) => ({
+    ...payload,
+    isLoading: false,
+  }),
+});
 
 export const getForecast = city => async (dispatch, getState) => {
   dispatch(forecastLoading());
