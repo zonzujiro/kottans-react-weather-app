@@ -2,15 +2,20 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import { getForecast } from './modules/forecast';
+import {
+  getForecast,
+  midnightWeatherForecastSelector,
+} from './modules/forecast';
+
+import { getMidnightWeather } from './utils';
 
 import LocationSearch from './components/LocationSearch';
-// import TodayForecast from './components/TodayForecast';
 import WeekForecast from './components/WeekForecast';
 
 const mapStateToProps = state => ({
   todayForecast: state.forecast.todayForecast,
-  weekForecast: state.forecast.weekForecast,
+  // weekForecast: getMidnightWeather(state.forecast.weekForecast),
+  weekForecast: midnightWeatherForecastSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -27,16 +32,8 @@ class App extends React.Component {
   }
 
   handleSearchSubmit = city => {
-    this.getCityForecast(city).then(state => {
-      this.setState(state);
-    });
+    this.props.getForecast(city);
   };
-
-  getCityForecast(city) {
-    return getForecast(city)
-      .then(this.computeNextState)
-      .catch(this.handleError);
-  }
 
   render() {
     const { inputValue } = this.state;

@@ -1,5 +1,8 @@
-import * as api from '../utils/api';
+import { createSelector } from 'reselect';
+
 import { getMidnightWeather } from '../utils';
+
+import * as api from '../utils/api';
 
 const FORECAST_LOADING = 'FORECAST_LOADING';
 const FORECAST_ERROR = 'FORECAST_ERROR';
@@ -61,11 +64,10 @@ export const getForecast = city => async (dispatch, getState) => {
 
   try {
     const [todayForecast, weekForecast] = await api.getForecast(city);
-    //TODO: Show error in getMidnightWeather - remove .list
     dispatch(
       forecastSuccess({
         todayForecast,
-        weekForecast: getMidnightWeather(weekForecast.list),
+        weekForecast: weekForecast.list,
       })
     );
   } catch (e) {
@@ -73,3 +75,8 @@ export const getForecast = city => async (dispatch, getState) => {
     forecastError(e);
   }
 };
+
+export const midnightWeatherForecastSelector = createSelector(
+  state => state.forecast.weekForecast,
+  getMidnightWeather
+);
