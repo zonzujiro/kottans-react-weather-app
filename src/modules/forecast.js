@@ -22,13 +22,10 @@ const forecastError = error => ({
   payload: { error },
 });
 
-const forecastSuccess = payload => {
-  console.log(payload);
-  return {
-    type: FORECAST_SUCCESS,
-    payload,
-  };
-};
+const forecastSuccess = payload => ({
+  type: FORECAST_SUCCESS,
+  payload,
+});
 
 export const forecast = (state = initState, action) => {
   switch (action.type) {
