@@ -1,25 +1,30 @@
 import React from 'react';
 
-import { getForecast, getGeoForecast } from './utils/api';
-import { bindAll, getMidnightWeather, getCoordinates } from './utils';
+import { connect } from 'react-redux';
+
+import { getForecast } from './modules/forecast';
 
 import LocationSearch from './components/LocationSearch';
 // import TodayForecast from './components/TodayForecast';
 import WeekForecast from './components/WeekForecast';
 
+const mapStateToProps = state => ({
+  todayForecast: state.forecast.todayForecast,
+  weekForecast: state.forecast.weekForecast,
+});
+
+const mapDispatchToProps = {
+  getForecast,
+};
+
 class App extends React.Component {
   state = {
     inputValue: 'Paris',
-    hasError: false,
-    todayForecast: null,
-    weekForecast: [],
   };
 
-  // componentDidMount() {
-  //   this.getCityForecast(this.state.inputValue).then(state => {
-  //     this.setState(state);
-  //   });
-  // }
+  componentDidMount() {
+    this.props.getForecast(this.state.inputValue);
+  }
 
   handleSearchSubmit = city => {
     this.getCityForecast(city).then(state => {
@@ -34,9 +39,8 @@ class App extends React.Component {
   }
 
   render() {
-    const { weekForecast, inputValue } = this.state;
-
-    console.trace();
+    const { inputValue } = this.state;
+    const { weekForecast } = this.props;
 
     return (
       <div className="weather-application">
@@ -51,4 +55,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

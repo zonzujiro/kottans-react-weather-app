@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react';
 
-import DayWeekForecast from './DayWeekForecast';
-
 const WeekForecast = ({ forecast }) => {
   return (
     <Fragment>

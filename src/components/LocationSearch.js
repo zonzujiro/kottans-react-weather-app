@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { bindAll } from '../utils';
-
 class LocationSearch extends React.Component {
   state = {
     isValid: true,
@@ -42,9 +40,6 @@ class LocationSearch extends React.Component {
 
   render() {
     const { isValid, value } = this.state;
-    const { renderButton } = this.props;
-
-    // console.trace();
 
     return (
       <form
